@@ -444,7 +444,7 @@ class hp816x(object):
         res = self.hp816x_set_TLS_laserState(self.hDriver, int(slot), self.laserStateDict[state]);
         self.checkError(res);  
         
-    def set_first_channel_frequency(self, wavelength, selMode='manual', slot='auto'):
+    def setwavelength(self, wavelength, selMode='manual', slot='auto'):
         if slot == 'auto':
             slot = self.getAutoTLSSlot();
         

@@ -1,3 +1,5 @@
+#Set all channel defaults to be A for simplicity because we're only working with 1 channel
+
 import comtypes.client as cc
 from comtypes import COMError
 import pyvisa as visa
@@ -17,7 +19,7 @@ class Ke26XXA(object):
         self.inst.Initialize(visaAddr, False, False, '')
     
     # Sets the voltage for a channel. If cvMode is true sets channel automatically to constant voltage mode
-    def setVoltage(self, v, chan='a',cvMode=True):
+    def setVoltage(self, v, chan="A",cvMode=True):
         if cvMode:
             self.setMode( 'cv')
         try:
@@ -25,7 +27,7 @@ class Ke26XXA(object):
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
         
-    def getVoltage(self, chan='a'):
+    def getVoltage(self, chan="A"):
         try:
             res = self.inst.Measurement.Voltage.Measure(chan)
             #res = self.inst.Source.Voltage.Level[chan]          This is the old statement
@@ -34,7 +36,7 @@ class Ke26XXA(object):
         return res
     
     # Sets the current for a channel. If ccMode is true sets channel automatically to constant current mode
-    def setCurrent(self, c, chan='a',  ccMode=True):#renamed
+    def setCurrent(self, c, chan="A",  ccMode=True):#renamed
         if ccMode:
             self.setMode( 'cc') 
         try:
@@ -42,45 +44,45 @@ class Ke26XXA(object):
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
         
-    def getCurrent(self, chan='a'):
+    def getCurrent(self, chan="A"):
         try:
             res = self.inst.Measurement.Current.Measure(chan)
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
         return res
         
-    def setVoltageAutorange(self, val,chan='a'):
+    def setVoltageAutorange(self, val,chan="A"):
         try:
             self.inst.Source.Voltage.AutoRangeEnabled[chan] = val
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
         
-    def setCurrentAutorange(self, val,chan='a'):
+    def setCurrentAutorange(self, val,chan="A"):
         try:
             self.inst.Source.Current.AutoRangeEnabled[chan] = val
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
             
-    def setCurrentMeasurementRange(self, val,chan='a'):
+    def setCurrentMeasurementRange(self, val,chan="A"):
         try:
             self.inst.Measurement.Current.Range[chan] = val
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
             
-    def setVoltageLimit(self, val,chan='a'):
+    def setVoltageMode(self, val,chan="A"):#renamed to setVoltageMode instead of setVoltageLimit
         try:
             self.inst.Source.Voltage.Limit[chan] = val
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
             
-    def setCurrentLimit(self, val, chan='a'):
+    def setCurrentMode(self, val, chan="A"):
         try:
             self.inst.Source.Current.Limit[chan] = val
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
 
     # Sets mode to be constant current ('cc') or constant voltage ('cv')        
-    def setMode(self, mode,chan='a'):
+    def setMode(self, mode,chan="A"):
         # In COM driver, cc and cv are flipped
         modeDict = {'cv':1,\
                     'cc':0}
@@ -92,7 +94,7 @@ class Ke26XXA(object):
             raise Ke26XXAException('Mode must be either constant current (cc) or constant voltage (cv).')
      
     #set the auto zero function of the DAC  smua.AUTOZERO_OFF|smua.AUTOZERO_AUTO|smua.AUTOZERO_ONCE 
-    def setAutoZeroMode(self, mode,chan='a'):
+    def setAutoZeroMode(self, mode,chan="A"):
         # In COM driver, cc and cv are flipped
         modeDict = {'off':0,\
                     'once':1,\
@@ -105,13 +107,13 @@ class Ke26XXA(object):
             raise Ke26XXAException('Mode must be either off, once, or auto.')
 
     # Sets the integration time in number of power line cycles. Range 0.001 to 25 
-    def setNPLC(self, val,chan='a'):
+    def setNPLC(self, val,chan="A"):
         try:
             self.inst.Measurement.NPLC[chan] = val
         except COMError:
             raise Ke26XXAException(self.checkError()[1])
     
-    def outputenable(self, enable,chan='a'):
+    def outputenable(self, enable,chan="A"):
         try:
             self.inst.Source.OutputEnabled[chan] = enable
         except COMError:
@@ -121,7 +123,7 @@ class Ke26XXA(object):
         instErr, errMsg = self.inst.Utility.ErrorQuery()
         return instErr, errMsg
         
-    def queryErrorStatus(self,val,chan='a'):
+    def queryErrorStatus(self,val,chan="A"):
         self.inst.DriverOperation.QueryInstrumentStatus=val
         
     def set_sense_mode(self,sense_mode="remote"):
