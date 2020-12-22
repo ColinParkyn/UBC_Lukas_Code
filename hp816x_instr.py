@@ -436,7 +436,7 @@ class hp816x(object):
         self.checkError(res);  
         
         
-    def setTLSState(self, state, slot='auto'):
+    def setTLSState(self, state, slot='auto'): #turns laser on(lets it pass through optic cable)
         """ turn on or off"""
         if slot == 'auto':
             slot = self.getAutoTLSSlot();
@@ -444,14 +444,14 @@ class hp816x(object):
         res = self.hp816x_set_TLS_laserState(self.hDriver, int(slot), self.laserStateDict[state]);
         self.checkError(res);  
         
-    def setwavelength(self, wavelength, selMode='manual', slot='auto'):
+    def setWavelength(self, wavelength, selMode='manual', slot='auto'):#sets wavelength in m
         if slot == 'auto':
             slot = self.getAutoTLSSlot();
         
         res = self.hp816x_set_TLS_wavelength(self.hDriver, int(slot), self.laserSelModeDict[selMode], wavelength);
         self.checkError(res);
         
-    def set_output_power(self, power, slot='auto', selMode='manual', unit='dBm'):
+    def setOutputPower(self, power, slot='auto', selMode='manual', unit='dBm'): #sets power in dBm
         if slot == 'auto':
             slot = self.getAutoTLSSlot();
         
@@ -490,7 +490,7 @@ class hp816x(object):
             very small"""
         res = self.hp816x_returnEquidistantData(self.hDriver, value)  
         return res
-    def getOpticalPower(self):
+    def getOpticalPower(self):#finds out what optical power is
         return(self.inst.query('SOUR:POW?'))
 		
     def query(self,querystring):
@@ -499,7 +499,7 @@ class hp816x(object):
         return(self.inst.read(querystring))
     def write(self,querystring):
         return(self.inst.write(querystring))
-    def darken(self,val):#val is 1 for dark on,0 for dark off
+    def darken(self,val):#val is 1 for dark on,0 for dark off testing not actually used
         self.inst.write('SOUR:POW:ATT:DARK '+str(val))
 		
     def createPrototypes(self):
